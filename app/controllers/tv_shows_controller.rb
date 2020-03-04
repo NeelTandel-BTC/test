@@ -28,6 +28,7 @@ class TvShowsController < ApplicationController
       current_user.favorite_shows.delete(show)
     else
       current_user.favorite_shows << show
+      SendMailWorker.perform_at(Time.now + 1.minute, current_user, show)
     end
     redirect_to tv_shows_path
   end
